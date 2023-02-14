@@ -1,0 +1,22 @@
+2023/02/14-15:07:18.236 a303 Reusing MANIFEST /Users/mohammedkhan/Documents/GitHub/whatsapp-web-client-js/.wwebjs_auth/RemoteAuth/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/02/14-15:07:18.236 a303 Recovering log #149
+2023/02/14-15:07:18.300 a303 Reusing old log /Users/mohammedkhan/Documents/GitHub/whatsapp-web-client-js/.wwebjs_auth/RemoteAuth/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/000149.log 
+2023/02/14-15:07:29.746 f903 Level-0 table #159: started
+2023/02/14-15:07:29.768 f903 Level-0 table #159: 1133463 bytes OK
+2023/02/14-15:07:29.779 f903 Delete type=0 #149
+2023/02/14-15:07:29.783 f903 Compacting 1@1 + 6@2 files
+2023/02/14-15:07:29.834 f903 Generated table #160@1: 46964 keys, 2228978 bytes
+2023/02/14-15:07:29.855 f903 Generated table #161@1: 2929 keys, 2157383 bytes
+2023/02/14-15:07:29.888 f903 Generated table #162@1: 15445 keys, 2212134 bytes
+2023/02/14-15:07:29.921 f903 Generated table #163@1: 22468 keys, 2202595 bytes
+2023/02/14-15:07:29.969 f903 Generated table #164@1: 80786 keys, 2225016 bytes
+2023/02/14-15:07:30.016 f903 Generated table #165@1: 81959 keys, 1764422 bytes
+2023/02/14-15:07:30.016 f903 Compacted 1@1 + 6@2 files => 12790528 bytes
+2023/02/14-15:07:30.027 f903 compacted to: files[ 0 0 6 0 0 0 0 ]
+2023/02/14-15:07:30.028 f903 Delete type=2 #159
+2023/02/14-15:07:30.028 f903 Delete type=2 #154
+2023/02/14-15:07:30.028 f903 Delete type=2 #155
+2023/02/14-15:07:30.028 f903 Delete type=2 #156
+2023/02/14-15:07:30.028 f903 Delete type=2 #152
+2023/02/14-15:07:30.028 f903 Delete type=2 #153
+2023/02/14-15:07:30.028 f903 Delete type=2 #151

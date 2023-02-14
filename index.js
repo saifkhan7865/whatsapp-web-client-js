@@ -1,53 +1,70 @@
+// @ts-check
 const express = require("express");
+const fs = require("fs");
+const { Client, MessageMedia, RemoteAuth } = require("whatsapp-web.js");
+const { MongoStore } = require("wwebjs-mongo");
+const mongoose = require("mongoose");
+
+mongoose.set("strictQuery", true);
+const MONGODB_URI =
+  "mongodb+srv://Saif:Arhaan123@cluster0.mj6hd.mongodb.net/test";
 const app = express();
-const qrcode = require("qrcode-terminal");
-const { Client } = require("whatsapp-web.js");
+const PORT = 2000;
+app.use(express.json({ limit: "16mb" }));
+app.listen(PORT, () => console.log("Listening on port " + PORT));
 
-const clients = {};
-
-app.get("/qr/:userId", (req, res) => {
-  const userId = req.params.userId;
-  if (clients[userId]) {
-    return res.send({ error: "Client already exists for user" });
-  }
-  const client = new Client();
-  client.on("qr", (qr) => {
-    res.send(qr);
-  });
-  client.on("authenticated", () => {
-    clients[userId] = client;
+// mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI).then(() => {
+  const store = new MongoStore({ mongoose: mongoose });
+  const client = new Client({
+    authStrategy: new RemoteAuth({
+      store: store,
+      backupSyncIntervalMs: 300000,
+    }),
   });
 
   client.initialize();
-});
 
-app.get("/client/:userId", (req, res) => {
-  const userId = req.params.userId;
+  client.on("qr", (qr) => {
+    console.log("QR RECEIVED", qr);
+    app.get("/qr", (req, res) => {
+      res.send(qr);
+    });
+  });
 
-  if (!clients[userId]) {
-    return res.status(404).send({ error: "Client not found for user" });
-  }
+  client.on("auth_failure", (msg) => {
+    console.error("AUTHENTICATION FAILURE", msg);
+  });
 
-  res.send(clients[userId]);
-});
+  client.on("ready", (msg) => {
+    console.log("Client is ready!");
+  });
 
-app.get("/chats/:userId", (req, res) => {
-  const userId = req.params.userId;
-
-  if (!clients[userId]) {
-    return res.status(404).send({ error: "Client not found for user" });
-  }
-
-  const client = clients[userId];
-
-  client.getChats().then((chats) => {
-    res.send(chats);
+  client.on("authenticated", (session) => {
+    console.log("AUTHENTICATED", session);
   });
 });
 
-app.listen(3002, () => {
-  console.log("Express app listening on port 3000");
+const allClients = {};
+const getClient = (sessionID) => {
+  if (!allClients[sessionID]) {
+    const store = new MongoStore({ mongoose: mongoose });
+    const client = new Client({
+      authStrategy: new RemoteAuth({
+        store: store,
+        backupSyncIntervalMs: 300000,
+      }),
+    });
+    client.initialize();
+    allClients[sessionID] = client;
+  }
+  return allClients[sessionID];
+};
+app.get("/sessionStart/:sessionid", (req, res) => {
+  const sessionid = req.params.sessionid;
+  const client = getClient(sessionid);
+  client.on("qr", (qr) => {
+    console.log("QR RECEIVED", qr);
+    res.send(qr);
+  });
 });
-
-// 1.authentication
-// 2.store session
